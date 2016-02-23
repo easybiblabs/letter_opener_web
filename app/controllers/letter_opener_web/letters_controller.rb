@@ -6,7 +6,7 @@ module LetterOpenerWeb
     before_filter :load_letter, :only => [:show, :attachment, :destroy]
 
     def index
-      @letters = Letter.search
+      @letters = LetterOpenerWeb::Letter.search
     end
 
     def show
@@ -17,7 +17,7 @@ module LetterOpenerWeb
     end
 
     def attachment
-      @letter = Letter.find(params[:id])
+      @letter = LetterOpenerWeb::Letter.find(params[:id])
       filename = "#{params[:file]}.#{params[:format]}"
 
       if file = @letter.attachments[filename]
@@ -28,12 +28,12 @@ module LetterOpenerWeb
     end
 
     def clear
-      Letter.destroy_all
+      LetterOpenerWeb::Letter.destroy_all
       redirect_to LetterOpenerWeb.railtie_routes_url_helpers.letters_path
     end
 
     def destroy
-      @letter = Letter.find(params[:id])
+      @letter = LetterOpenerWeb::Letter.find(params[:id])
       @letter.delete
       redirect_to LetterOpenerWeb.railtie_routes_url_helpers.letters_path
     end
@@ -46,7 +46,7 @@ module LetterOpenerWeb
 
     def load_letter
       if params[:id]
-        @letter = Letter.find(params[:id])
+        @letter = LetterOpenerWeb::Letter.find(params[:id])
         render :nothing => true, :status => 404 unless @letter.exists?
       end
     end
